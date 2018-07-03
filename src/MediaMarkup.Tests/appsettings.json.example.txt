@@ -1,0 +1,15 @@
+﻿{
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  },
+  "MediaMarkup": {
+    "ClientId": "",
+    "SecretKey": "",
+    "ApiBaseUrl": "https://www.mediamarkup.com/api/v1/",
+    "UseRetryLogic":  true,
+    "RetryStatusCodes":  "100,408,409,500,502,503,504"
+  }
+}
