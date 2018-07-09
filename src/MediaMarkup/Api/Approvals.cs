@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
 using MediaMarkup.Api.Models;
 using MediaMarkup.Core;
 
@@ -79,7 +79,7 @@ namespace MediaMarkup.Api
 
             using (var content = new MultipartFormDataContent())
             {
-                content.Add(new StreamContent(new MemoryStream(fileContent)), "file", HttpUtility.UrlEncode(filename));
+                content.Add(new StreamContent(new MemoryStream(fileContent)), "file", WebUtility.UrlEncode(filename));
 
                 var values = new[]
                 {
@@ -184,7 +184,7 @@ namespace MediaMarkup.Api
 
             using (var content = new MultipartFormDataContent())
             {
-                content.Add(new StreamContent(new MemoryStream(fileContent)), "file", HttpUtility.UrlEncode(filename));
+                content.Add(new StreamContent(new MemoryStream(fileContent)), "file", WebUtility.UrlEncode(filename));
 
                 var values = new[]
                 {
