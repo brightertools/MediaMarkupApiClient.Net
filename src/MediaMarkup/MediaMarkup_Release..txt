@@ -1,8 +1,14 @@
 ﻿---------------
+Version 0.0.0.3
+---------------
+
+UPDATED: Added support for .net framework 4.6.1
+
+---------------
 Version 0.0.0.2
 ---------------
 
-UPDATED: Vareious pre-relese updates
+UPDATED: Various pre-relese updates
 
 ---------------
 Version 0.0.0.1

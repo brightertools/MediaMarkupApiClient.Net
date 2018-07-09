@@ -45,7 +45,7 @@ namespace MediaMarkup.Tests
             {
                 FirstName = "TestUserApiMethods",
                 LastName = "TestUserApiMethods",
-                EmailAddress = "TestUserApiMethods@brightertools.com",
+                EmailAddress = $"TestUserApiMethods{Guid.NewGuid():N}@brightertools.com",
                 UserRole = UserRole.Administrator,
                 Password = "",
                 WebLoginEnabled = false
@@ -241,8 +241,8 @@ namespace MediaMarkup.Tests
                 await _context.ApiClient.Users.Delete(approvalOwnerUserid);
                 await _context.ApiClient.Users.Delete(approvalReviewer1Id);
                 await _context.ApiClient.Users.Delete(approvalReviewer2Id);
-                await _context.ApiClient.Users.Delete(approvalReviewer3Id);
-                await _context.ApiClient.Users.Delete(approvalReviewer4Id);
+                //await _context.ApiClient.Users.Delete(approvalReviewer3Id);
+                //await _context.ApiClient.Users.Delete(approvalReviewer4Id);
             }
 
             
