@@ -209,20 +209,17 @@ namespace MediaMarkup.Api
             }
         }
 
-        public async Task<string> GetPersonalUrl(string userId, string approvalId, int? version = null, int? compareVersion = null)
+        /// <inheritdoc />
+        public async Task<PersonalUrlCreateResult> CreatePersonalUrl(PersonalUrlCreateParameters parameters)
         {
-            var response = await ApiClient.PostAsJsonAsync("Approvals/GetPersonalUrl/", new Models.PersonalUrlRequestParameters
-            {
-                UserId = userId,
-                ApprovalId = approvalId
-            });
+            var response = await ApiClient.PostAsJsonAsync("Approvals/CreatePersonalUrl/", parameters);
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadAsStringAsync();
+                return await response.Content.ReadAsJsonAsync<PersonalUrlCreateResult>();
             }
 
-            throw new Exception($"{response.StatusCode},{response.ReasonPhrase}");
+            throw new ApiException("Approvals.GetPersonalUrl", response.StatusCode, await response.Content.ReadAsStringAsync());
         }
 
         /// <inheritdoc />

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Xunit.Abstractions;
 
 namespace MediaMarkup.Tests
 {
@@ -19,6 +16,8 @@ namespace MediaMarkup.Tests
 
         public Settings Settings { get; set; }
 
+        public Core.Tests.TestSettings TestSettings { get; set; }
+
         public string AccessToken { get; set; }
 
         public TestContextFixture()
@@ -26,6 +25,7 @@ namespace MediaMarkup.Tests
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile("testsettings.json", true, true)
                 .Build();
 
             //IConfiguration configuration = builder.Build();
@@ -37,10 +37,13 @@ namespace MediaMarkup.Tests
             services.AddLogging();
             services.AddOptions();
             services.Configure<Settings>(Configuration.GetSection("MediaMarkup"));
+            services.Configure<Core.Tests.TestSettings>(Configuration.GetSection("MediaMarkup"));
             services.AddMediaMarkup();
             ServiceProvider = services.BuildServiceProvider();
 
             Settings = ServiceProvider.GetService<IOptions<Settings>>().Value;
+
+            TestSettings = ServiceProvider.GetService<IOptions<Core.Tests.TestSettings>>().Value;
         }
 
         public void Dispose()

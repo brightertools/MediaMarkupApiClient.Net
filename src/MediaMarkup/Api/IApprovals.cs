@@ -75,14 +75,11 @@ namespace MediaMarkup.Api
         Task<ApprovalCreateVersionResult> CreateVersion(string filename, byte[] fileContent, ApprovalCreateVersionParameters parameters);
 
         /// <summary>
-        /// Gets the personal url for the specified approvalId
+        /// Creates the personal url for the specified user, approvalId & version (specify compare approval id and vesion to view comparison)
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="approvalId"></param>
-        /// <param name="version"></param>
-        /// <param name="compareVersion"></param>
-        /// <returns></returns>
-        Task<string> GetPersonalUrl(string userId, string approvalId, int? version = null, int? compareVersion = null);
+        /// <param name="parameters"></param>
+        /// <returns><see cref="PersonalUrlCreateResult"/></returns>
+        Task<PersonalUrlCreateResult> CreatePersonalUrl(PersonalUrlCreateParameters parameters);
 
         /// <summary>
         /// Deletes the specified approval.

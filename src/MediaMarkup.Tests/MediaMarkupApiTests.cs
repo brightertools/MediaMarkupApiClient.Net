@@ -90,6 +90,10 @@ namespace MediaMarkup.Tests
         [Fact, TestPriority(4)]
         public async Task TestApprovalApiMethods()
         {
+            var testAdminOwnerUserId = _context.TestSettings.AdminUserId;
+
+            Assert.True(!string.IsNullOrWhiteSpace(testAdminOwnerUserId));
+
             var approvalId = string.Empty;
             var approvalOwnerUserid = string.Empty;
             var approvalReviewer1Id = string.Empty;
@@ -136,8 +140,8 @@ namespace MediaMarkup.Tests
             try
             {
                 var parameters = new ApprovalListRequestParameters();
-                //parameters.OwnerIdFilter = "7b3529ffe49c4cc2ad6dae1cd03b371b";
-                parameters.UserIdFilter = "7b3529ffe49c4cc2ad6dae1cd03b371b";
+                //parameters.OwnerIdFilter = testAdminOwnerUserId;
+                parameters.UserIdFilter = testAdminOwnerUserId;
                 var approvalListResult = await _context.ApiClient.Approvals.GetList(parameters);
 
                 var approvalCount = approvalListResult.TotalCount;
@@ -148,7 +152,7 @@ namespace MediaMarkup.Tests
                 var approvalCreateParameters = new ApprovalCreateParameters
                 {
                     Name = "TestApproval",
-                    OwnerUserId = "7b3529ffe49c4cc2ad6dae1cd03b371b",
+                    OwnerUserId = testAdminOwnerUserId,
                     NumberOfDecisionsRequired = 0,
                     Deadline = DateTime.Now.AddDays(5),
                     Reviewers = new List<ApprovalGroupUser> { new ApprovalGroupUser{ UserId = approvalReviewer1Id, AllowDecision = true, AllowDownload = true, CommentsEnabled = true} }
@@ -167,7 +171,7 @@ namespace MediaMarkup.Tests
                     Id = approvalId,
                     Name = "TestApproval Updated",
                     Active = true,
-                    OwnerUserId = "7b3529ffe49c4cc2ad6dae1cd03b371b"
+                    OwnerUserId = testAdminOwnerUserId
                 };
 
                 await _context.ApiClient.Approvals.Update(approvalUpdateParameters);
@@ -187,12 +191,22 @@ namespace MediaMarkup.Tests
                     LockPreviousVersion = false
                 };
 
+                // Create a new Version
                 var newVersionResult = await _context.ApiClient.Approvals.CreateVersion(testFile, approvalCreateVersionParameters);
 
-                // Create a new approval group
+                // Create a Personal Url for the vesion we just created
+                var createPersonalUrlResponse = await _context.ApiClient.Approvals.CreatePersonalUrl(new PersonalUrlCreateParameters
+                {
+                    UserId = testAdminOwnerUserId,
+                    Version = 2,
+                    ApprovalId = approvalId
+                });
+                var url = createPersonalUrlResponse.Url;
 
+                // Note: To test the url, debug the tests and set a breakpoint, get the url and try it in a browser.
+                // The approval will be deleted below, so test the url manually then contine..
 
-
+                // Todo: IMplement the rest of the tests / api calls
 
                 // We add 2 reviewers to the approval
 

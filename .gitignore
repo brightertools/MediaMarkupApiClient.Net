@@ -240,3 +240,4 @@ Projects/Web/appsettings.Development.json
 Projects/App.Tests/appsettings.json
 src/MediaMarkup.Tests/appsettings.Development.json
 src/MediaMarkup.Tests/appsettings.json
+src/MediaMarkup.Tests/testsettings.json

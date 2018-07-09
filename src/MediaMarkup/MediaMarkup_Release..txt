@@ -1,0 +1,11 @@
+﻿---------------
+Version 0.0.0.2
+---------------
+
+UPDATED: Vareious pre-relese updates
+
+---------------
+Version 0.0.0.1
+---------------
+
+Initial Version for Media Markup API V1 (pre-release)

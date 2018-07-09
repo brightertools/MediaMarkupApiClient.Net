@@ -10,6 +10,12 @@
     "SecretKey": "",
     "ApiBaseUrl": "https://www.mediamarkup.com/api/v1/",
     "UseRetryLogic":  true,
-    "RetryStatusCodes":  "100,408,409,500,502,503,504"
+    "RetryStatusCodes":  "100,408,409,500,502,503,504",
+	
+	// Properties below are only for the unit tests
+	"Tests": {
+	  // AdminUserId, any existing Admin User Id
+      "AdminUserId" :  "" 
+    }
   }
 }
