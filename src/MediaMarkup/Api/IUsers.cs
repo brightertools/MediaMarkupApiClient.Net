@@ -18,7 +18,7 @@ namespace MediaMarkup.Api
         /// <param name="id"></param>
         /// <param name="throwExceptionIfNull">If the result is null for any reaason (not found or errors), specify true to throw an exception which will provide additional information</param>
         /// <returns></returns>
-        Task<User> GeById(string id, bool throwExceptionIfNull = false);
+        Task<User> GetById(string id, bool throwExceptionIfNull = false);
 
         /// <summary>
         /// Gets a user by the specified email address.

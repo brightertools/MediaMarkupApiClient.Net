@@ -1,7 +1,7 @@
 ﻿namespace MediaMarkup
 {
     /// <summary>
-    /// User Role associated with User
+    /// User role associated with User
     /// </summary>
     public enum UserRole
     {
