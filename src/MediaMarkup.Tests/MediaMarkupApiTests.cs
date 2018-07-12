@@ -55,7 +55,7 @@ namespace MediaMarkup.Tests
             Assert.True(userCreated != null);
 
             // Get the user by id
-            var retrievedUserById = await _context.ApiClient.Users.GeById(userCreated.Id, true);
+            var retrievedUserById = await _context.ApiClient.Users.GetById(userCreated.Id, true);
             
             Assert.True(retrievedUserById != null && userCreated.Id == retrievedUserById.Id);
 
@@ -82,7 +82,7 @@ namespace MediaMarkup.Tests
             await _context.ApiClient.Users.Delete(userCreated.Id);
             
             // Get the user by if to see if user exists
-            var userExists = await _context.ApiClient.Users.GeById(userCreated.Id);
+            var userExists = await _context.ApiClient.Users.GetById(userCreated.Id);
             
             Assert.True(userExists == null);
         }
@@ -155,7 +155,8 @@ namespace MediaMarkup.Tests
                     OwnerUserId = testAdminOwnerUserId,
                     NumberOfDecisionsRequired = 0,
                     Deadline = DateTime.Now.AddDays(5),
-                    Reviewers = new List<ApprovalGroupUser> { new ApprovalGroupUser{ UserId = approvalReviewer1Id, AllowDecision = true, AllowDownload = true, CommentsEnabled = true} }
+                    AddOwnerToInitialApprovalGroup = true,
+                    Reviewers = new List<ApprovalGroupUser> {new ApprovalGroupUser {UserId = approvalReviewer1Id, AllowDecision = true, AllowDownload = true, CommentsEnabled = true}}
                 };
 
                 // Upload Approval
@@ -176,13 +177,13 @@ namespace MediaMarkup.Tests
 
                 await _context.ApiClient.Approvals.Update(approvalUpdateParameters);
 
-                await _context.ApiClient.Approvals.UpdateName(new ApprovalUpdateNameParameters { Id = approvalId, Name = "TestApproval Updated 3"});
+                await _context.ApiClient.Approvals.UpdateName(new ApprovalUpdateNameParameters {Id = approvalId, Name = "TestApproval Updated 3"});
 
-                await _context.ApiClient.Approvals.UpdateOwnerUserId(new ApprovalUpdateOwnerUserIdParameters { Id = approvalId, OwnerUserId = approvalOwnerUserid});
+                await _context.ApiClient.Approvals.UpdateOwnerUserId(new ApprovalUpdateOwnerUserIdParameters {Id = approvalId, OwnerUserId = approvalOwnerUserid});
 
-                await _context.ApiClient.Approvals.SetActive(new ApprovalSetActiveParameters { Id = approvalId, Active = false});
+                await _context.ApiClient.Approvals.SetActive(new ApprovalSetActiveParameters {Id = approvalId, Active = false});
 
-                await _context.ApiClient.Approvals.SetActive(new ApprovalSetActiveParameters { Id = approvalId, Active = true});
+                await _context.ApiClient.Approvals.SetActive(new ApprovalSetActiveParameters {Id = approvalId, Active = true});
 
                 var approvalCreateVersionParameters = new ApprovalCreateVersionParameters
                 {
@@ -232,6 +233,10 @@ namespace MediaMarkup.Tests
 
                 // we get the approval details
             }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
             finally
             {
                 // delete approval
@@ -243,9 +248,11 @@ namespace MediaMarkup.Tests
                 await _context.ApiClient.Users.Delete(approvalReviewer2Id);
                 //await _context.ApiClient.Users.Delete(approvalReviewer3Id);
                 //await _context.ApiClient.Users.Delete(approvalReviewer4Id);
+
+                Assert.True(true);
             }
 
-            
+
         }
 
     }

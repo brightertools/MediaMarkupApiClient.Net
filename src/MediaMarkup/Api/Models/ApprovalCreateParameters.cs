@@ -41,9 +41,15 @@ namespace MediaMarkup.Api.Models
         public DateTime? Deadline { get; set; }
 
         /// <summary>
+        /// Set to true to add the OwnerId user to the approval group
+        /// </summary>
+        [JsonProperty("addOwnerToInitialApprovalGroup")]
+        public bool? AddOwnerToInitialApprovalGroup { get; set; }
+
+        /// <summary>
         /// Adds Reviewers to the approval (these reviewers are added to the initial approval group)
         /// Owner options can be overwritten by adding the owner with specified options.
-        /// All users with valid user id's (that exist) willbe added to the approval.
+        /// All users with valid user id's (that exist) will be added to the approval.
         /// </summary>
         [JsonProperty("reviewers")]
         public List<ApprovalGroupUser> Reviewers { get; set; }

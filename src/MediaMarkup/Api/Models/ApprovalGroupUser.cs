@@ -36,5 +36,10 @@ namespace MediaMarkup.Api.Models
         /// Allow the user to download the file
         /// </summary>
         public bool AllowDownload { get; set; }
+
+        /// <summary>
+        /// Allows version selection, otherwise only the latest version will be displayed for the user
+        /// </summary>
+        public bool AllowVersionSelection { get; set; }
     }
 }

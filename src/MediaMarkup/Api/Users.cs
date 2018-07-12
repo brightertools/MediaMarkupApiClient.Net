@@ -29,7 +29,7 @@ namespace MediaMarkup.Api
         }
 
         /// <inheritdoc />
-        public async Task<User> GeById(string id, bool throwExceptionIfNull = false)
+        public async Task<User> GetById(string id, bool throwExceptionIfNull = false)
         {
             var response = await ApiClient.GetAsync($"Users/GetById?id={id}");
 
