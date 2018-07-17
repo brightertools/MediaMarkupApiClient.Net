@@ -1,4 +1,10 @@
 ﻿---------------
+Version 0.0.0.5
+---------------
+
+ADDED: Observer property to PersonalUrlCreateParameters
+
+---------------
 Version 0.0.0.4
 ---------------
 
