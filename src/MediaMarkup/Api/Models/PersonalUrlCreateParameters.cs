@@ -36,5 +36,11 @@ namespace MediaMarkup.Api.Models
         /// </summary>
         [JsonProperty("compareVersion")]
         public int CompareVersion { get; set; }
+
+        /// <summary>
+        /// Observer / Guest User to view approval/version readonly
+        /// </summary>
+        [JsonProperty("observer")]
+        public bool? Observer { get; set; }
     }
 }
