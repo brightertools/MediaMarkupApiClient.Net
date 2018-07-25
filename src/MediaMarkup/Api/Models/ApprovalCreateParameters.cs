@@ -14,6 +14,7 @@ namespace MediaMarkup.Api.Models
             OwnerUserId = string.Empty;
             Name = string.Empty;
             NumberOfDecisionsRequired = 0;
+            AddOwnerToInitialApprovalGroup = false;
         }
 
         /// <summary>

@@ -15,6 +15,8 @@ namespace MediaMarkup.Api.Models
             CommentsEnabled = false;
             AllowDecision = false;
             AllowDownload = false;
+            AllowVersionSelection = false;
+            Enabled = false;
         }
 
         /// <summary>
@@ -41,5 +43,10 @@ namespace MediaMarkup.Api.Models
         /// Allows version selection, otherwise only the latest version will be displayed for the user
         /// </summary>
         public bool AllowVersionSelection { get; set; }
+
+        /// <summary>
+        /// Enabled property
+        /// </summary>
+        public bool Enabled { get; set; }
     }
 }

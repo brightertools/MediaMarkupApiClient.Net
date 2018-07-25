@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using MediaMarkup.Api.Models;
 
 namespace MediaMarkup.Api
@@ -89,5 +90,33 @@ namespace MediaMarkup.Api
         /// <param name="id"></param>
         /// <returns></returns>
         Task Delete(string id);
+
+        /// <summary>
+        /// Adds an approval group user to the specified approval version
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        Task AddApprovalGroupUser(ApprovalGroupUserParameters parameters);
+
+        /// <summary>
+        /// Adds multiple approval group users to the specified approval version
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        Task AddApprovalGroupUsers(ApprovalGroupUsersParameters parameters);
+
+        /// <summary>
+        /// Updates the specified approval group user for the specified approval version
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        Task UpdateApprovalGroupUser(ApprovalGroupUserParameters parameters);
+
+        /// <summary>
+        /// Removes the specified approval group user for the specified approval version
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        Task RemoveApprovalGroupUser(ApprovalGroupRemoveUserParameters parameters);
     }
 }
