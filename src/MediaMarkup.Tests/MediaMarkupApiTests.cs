@@ -149,7 +149,7 @@ namespace MediaMarkup.Tests
             {
                 FirstName = "ApprovalUser4",
                 LastName = $"4Test{Guid.NewGuid().ToString()}",
-                EmailAddress = $"Test {Guid.NewGuid().ToString("N")}@brightertools.com"
+                EmailAddress = $"Test {Guid.NewGuid():N}@brightertools.com"
             };
             var userCreated5 = await _context.ApiClient.Users.Create(userCreateParameters);
 
@@ -159,9 +159,8 @@ namespace MediaMarkup.Tests
 
             try
             {
-                var parameters = new ApprovalListRequestParameters();
+                var parameters = new ApprovalListRequestParameters {UserIdFilter = testAdminOwnerUserId};
                 //parameters.OwnerIdFilter = testAdminOwnerUserId;
-                parameters.UserIdFilter = testAdminOwnerUserId;
                 var approvalListResult = await _context.ApiClient.Approvals.GetList(parameters);
 
                 var approvalCount = approvalListResult.TotalCount;
@@ -360,6 +359,11 @@ namespace MediaMarkup.Tests
                     AllowVersionSelection = false,
                     //ApprovalGroupId not set to pick up first group
                 });
+
+                // Get Approval Details
+                var approval = await _context.ApiClient.Approvals.Get(approvalId);
+
+                var apprId = approval.Id;
 
                 // We add 2 reviewers to the approval
 

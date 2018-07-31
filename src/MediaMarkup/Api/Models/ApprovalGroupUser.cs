@@ -1,13 +1,14 @@
-﻿
+﻿using Newtonsoft.Json;
+
 namespace MediaMarkup.Api.Models
 {
     /// <summary>
-    /// Approval Group User
+    /// Approval Group Reviewer
     /// </summary>
     public class ApprovalGroupUser
     {
         /// <summary>
-        /// Approval Group User
+        /// Approval Group Reviewer
         /// </summary>
         public ApprovalGroupUser()
         {
@@ -22,31 +23,37 @@ namespace MediaMarkup.Api.Models
         /// <summary>
         /// User Id
         /// </summary>
+        [JsonProperty("userId")]
         public string UserId { get; set; }
 
         /// <summary>
-        /// Allow the user to mkae comments
+        /// Enables commenting on approval
         /// </summary>
+        [JsonProperty("commentsEnabled")]
         public bool CommentsEnabled { get; set; }
 
         /// <summary>
-        /// Allow the user to submit a decision
+        /// Enables making a decision (approving/not approving a file)
         /// </summary>
+        [JsonProperty("allowDecision")]
         public bool AllowDecision { get; set; }
 
         /// <summary>
-        /// Allow the user to download the file
+        /// Allows the user to download the file for approval
         /// </summary>
+        [JsonProperty("allowDownload")]
         public bool AllowDownload { get; set; }
 
         /// <summary>
         /// Allows version selection, otherwise only the latest version will be displayed for the user
         /// </summary>
+        [JsonProperty(PropertyName = "versionSelection")]
         public bool AllowVersionSelection { get; set; }
 
         /// <summary>
         /// Enabled property
         /// </summary>
+        [JsonProperty(PropertyName = "enabled")]
         public bool Enabled { get; set; }
     }
 }

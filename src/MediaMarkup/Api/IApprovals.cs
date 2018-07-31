@@ -22,6 +22,13 @@ namespace MediaMarkup.Api
         Task<ApprovalCreateResult> Create(string filePath, ApprovalCreateParameters approvalCreateParameters);
 
         /// <summary>
+        /// Gets the Approval details for the specified approval id
+        /// </summary>
+        /// <param name="id">Approval Id</param>
+        /// <returns></returns>
+        Task<Approval> Get(string id);
+
+        /// <summary>
         /// Upload file to create a new Approval
         /// </summary>
         /// <param name="filename"></param>

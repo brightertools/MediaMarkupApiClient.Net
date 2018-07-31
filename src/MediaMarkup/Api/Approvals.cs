@@ -44,6 +44,19 @@ namespace MediaMarkup.Api
             return await Create(filename, fileContent, parameters);
         }
 
+        /// <inheritdoc />
+        public async Task<Approval> Get(string id)
+        {
+            var response = await ApiClient.GetAsync($"Approvals/Get/?id={id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsJsonAsync<Approval>();
+            }
+
+            throw new ApiException("Approvals.Get", response.StatusCode, await response.Content.ReadAsStringAsync());
+        }
+
         /// <summary>
         /// Creates an approval, uploading the supplied media for the specified approval parameters
         /// </summary>
