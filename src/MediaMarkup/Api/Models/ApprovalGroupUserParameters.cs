@@ -1,30 +1,54 @@
-﻿using Newtonsoft.Json;
+﻿
+using Newtonsoft.Json;
 
 namespace MediaMarkup.Api.Models
 {
     /// <summary>
-    /// Approval Group Reviewer
+    /// ApprovalGroupUserParameters for adding and updating approval group users
     /// </summary>
-    public class ApprovalGroupUser
+    public class ApprovalGroupUserParameters
     {
         /// <summary>
         /// Approval Group Reviewer
         /// </summary>
-        public ApprovalGroupUser()
+        public ApprovalGroupUserParameters()
         {
+            Id = "";
             UserId = "";
+            ApprovalGroupId = "";
             CommentsEnabled = false;
             AllowDecision = false;
             AllowDownload = false;
             AllowVersionSelection = false;
-            Enabled = false;
         }
+
+        /// <summary>
+        /// The Approval Id
+        /// </summary>
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// The Approval Version
+        /// </summary>
+        [JsonProperty("version")]
+        public int Version { get; set; }
 
         /// <summary>
         /// User Id
         /// </summary>
         [JsonProperty("userId")]
         public string UserId { get; set; }
+
+        /// <summary>
+        /// Approval Group Id specifies the approval group Id to add the user to.<br />
+        /// If approvalGroupId is empty or null and the appproval version only has 1 group, then the user will be added to that group
+        /// </summary>
+        [JsonProperty("approvalGroupId")]
+        public string ApprovalGroupId { get; set; }
+
+        //[JsonProperty("")]
+        //public bool Administrator { get; set; }
 
         /// <summary>
         /// Enables commenting on approval
@@ -44,6 +68,9 @@ namespace MediaMarkup.Api.Models
         [JsonProperty("allowDownload")]
         public bool AllowDownload { get; set; }
 
+        //[JsonProperty("allowGroupView")]
+        //public bool AllowGroupView { get; set; }
+
         /// <summary>
         /// Allows version selection, otherwise only the latest version will be displayed for the user
         /// </summary>
@@ -51,7 +78,7 @@ namespace MediaMarkup.Api.Models
         public bool AllowVersionSelection { get; set; }
 
         /// <summary>
-        /// Enabled property
+        /// Enables/Disables user
         /// </summary>
         [JsonProperty(PropertyName = "enabled")]
         public bool Enabled { get; set; }

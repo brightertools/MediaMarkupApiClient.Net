@@ -118,7 +118,7 @@ namespace MediaMarkup.Tests
             userCreateParameters = new UserCreateParameters
             {
                 FirstName = "ApprovalUser1",
-                LastName = $"Test {Guid.NewGuid().ToString()}",
+                LastName = $"2Test{Guid.NewGuid().ToString()}",
                 EmailAddress = $"Test {Guid.NewGuid().ToString("N")}@brightertools.com"
             };
             var userCreated2 = await _context.ApiClient.Users.Create(userCreateParameters);
@@ -128,20 +128,39 @@ namespace MediaMarkup.Tests
             userCreateParameters = new UserCreateParameters
             {
                 FirstName = "ApprovalUser2",
-                LastName = $"Test {Guid.NewGuid().ToString()}",
+                LastName = $"T2est{Guid.NewGuid().ToString()}",
                 EmailAddress = $"Test {Guid.NewGuid().ToString("N")}@brightertools.com"
             };
             var userCreated3 = await _context.ApiClient.Users.Create(userCreateParameters);
 
             approvalReviewer2Id = userCreated3.Id;
 
+            userCreateParameters = new UserCreateParameters
+            {
+                FirstName = "ApprovalUser3",
+                LastName = $"3Test{Guid.NewGuid().ToString()}",
+                EmailAddress = $"Test {Guid.NewGuid().ToString("N")}@brightertools.com"
+            };
+            var userCreated4 = await _context.ApiClient.Users.Create(userCreateParameters);
+
+            approvalReviewer3Id = userCreated4.Id;
+
+            userCreateParameters = new UserCreateParameters
+            {
+                FirstName = "ApprovalUser4",
+                LastName = $"4Test{Guid.NewGuid().ToString()}",
+                EmailAddress = $"Test {Guid.NewGuid():N}@brightertools.com"
+            };
+            var userCreated5 = await _context.ApiClient.Users.Create(userCreateParameters);
+
+            approvalReviewer4Id = userCreated5.Id;
+
             Assert.True(userCreated2 != null);
 
             try
             {
-                var parameters = new ApprovalListRequestParameters();
+                var parameters = new ApprovalListRequestParameters {UserIdFilter = testAdminOwnerUserId};
                 //parameters.OwnerIdFilter = testAdminOwnerUserId;
-                parameters.UserIdFilter = testAdminOwnerUserId;
                 var approvalListResult = await _context.ApiClient.Approvals.GetList(parameters);
 
                 var approvalCount = approvalListResult.TotalCount;
@@ -156,7 +175,11 @@ namespace MediaMarkup.Tests
                     NumberOfDecisionsRequired = 0,
                     Deadline = DateTime.Now.AddDays(5),
                     AddOwnerToInitialApprovalGroup = true,
-                    Reviewers = new List<ApprovalGroupUser> {new ApprovalGroupUser {UserId = approvalReviewer1Id, AllowDecision = true, AllowDownload = true, CommentsEnabled = true}}
+                    Reviewers = new List<ApprovalGroupUser>
+                    {
+                        new ApprovalGroupUser {UserId = approvalReviewer1Id, AllowDecision = true, AllowDownload = true, CommentsEnabled = true},
+                        new ApprovalGroupUser {UserId = approvalReviewer2Id, AllowDecision = true, AllowDownload = true, CommentsEnabled = true}
+                    }
                 };
 
                 // Upload Approval
@@ -192,22 +215,155 @@ namespace MediaMarkup.Tests
                     LockPreviousVersion = false
                 };
 
-                // Create a new Version
-                var newVersionResult = await _context.ApiClient.Approvals.CreateVersion(testFile, approvalCreateVersionParameters);
+                // Create a new Version (copy all groups / users)
+                var newVersionWithExistingGroupsResult = await _context.ApiClient.Approvals.CreateVersion(testFile, approvalCreateVersionParameters);
+
+                approvalCreateVersionParameters = new ApprovalCreateVersionParameters
+                {
+                    ApprovalId = approvalId,
+                    CopyApprovalGroups = false,
+                    LockPreviousVersion = true,
+                    AddOwnerToInitialApprovalGroup = true,
+                    Reviewers = new List<ApprovalGroupUser>
+                    {
+                        new ApprovalGroupUser {UserId = approvalReviewer2Id, AllowDecision = true, AllowDownload = true, CommentsEnabled = true},
+                        new ApprovalGroupUser {UserId = approvalReviewer3Id, AllowDecision = true, AllowDownload = true, CommentsEnabled = true}
+                    }
+                };
+
+                var newVersionWithNewReviewersResult = await _context.ApiClient.Approvals.CreateVersion(testFile, approvalCreateVersionParameters);
 
                 // Create a Personal Url for the vesion we just created
-                var createPersonalUrlResponse = await _context.ApiClient.Approvals.CreatePersonalUrl(new PersonalUrlCreateParameters
+                var createOwnerPersonalUrlResponse = await _context.ApiClient.Approvals.CreatePersonalUrl(new PersonalUrlCreateParameters
                 {
                     UserId = testAdminOwnerUserId,
-                    Version = 2,
+                    Version = 3,
                     ApprovalId = approvalId
                 });
-                var url = createPersonalUrlResponse.Url;
 
-                // Note: To test the url, debug the tests and set a breakpoint, get the url and try it in a browser.
+                // Note: To test the url, debug the tests and set a breakpoint on the line below, get the url and try it in a browser.
                 // The approval will be deleted below, so test the url manually then contine..
+                var url = createOwnerPersonalUrlResponse.Url;
 
-                // Todo: IMplement the rest of the tests / api calls
+                // Todo: Implement the rest of the tests / api calls
+
+                await _context.ApiClient.Approvals.RemoveApprovalGroupUser(new ApprovalGroupRemoveUserParameters
+                {
+                    Id = newVersionWithNewReviewersResult.Id,
+                    Version = newVersionWithNewReviewersResult.Version,
+                    UserId = approvalReviewer2Id
+                    //ApprovalGroupId not set..should pick up only group
+                });
+
+                await _context.ApiClient.Approvals.RemoveApprovalGroupUser(new ApprovalGroupRemoveUserParameters
+                {
+                    Id = newVersionWithNewReviewersResult.Id,
+                    Version = newVersionWithNewReviewersResult.Version,
+                    UserId = approvalReviewer3Id
+                    //ApprovalGroupId not set..should pick up only group
+                });
+
+                await _context.ApiClient.Approvals.AddApprovalGroupUser(new ApprovalGroupUserParameters
+                {
+                    UserId = approvalReviewer2Id,
+                    Id = newVersionWithNewReviewersResult.Id,
+                    Version = newVersionWithNewReviewersResult.Version,
+                    AllowDecision = true,
+                    AllowDownload = true,
+                    AllowVersionSelection = true,
+                    //ApprovalGroupId not set to pick up first group
+                });
+
+                // Create a Personal Url for the vesion we just created
+                var createPersonalUrlForUserIn2GroupsResponse = await _context.ApiClient.Approvals.CreatePersonalUrl(new PersonalUrlCreateParameters
+                {
+                    UserId = approvalReviewer2Id,
+                    Version = 3,
+                    ApprovalId = approvalId
+                });
+
+                // Note: To test the url, debug the tests and set a breakpoint on the line below, get the url and try it in a browser.
+                // The approval will be deleted below, so test the url manually then contine..
+                var url2 = createPersonalUrlForUserIn2GroupsResponse.Url;
+
+                // Create a Personal Url for the vesion we just created
+                var createPersonalUrlForUserIn1GroupsResponse = await _context.ApiClient.Approvals.CreatePersonalUrl(new PersonalUrlCreateParameters
+                {
+                    UserId = approvalReviewer2Id,
+                    Version = 3,
+                    ApprovalId = approvalId
+                });
+
+                // Note: To test the url, debug the tests and set a breakpoint on the line below, get the url and try it in a browser.
+                // The approval will be deleted below, so test the url manually then contine..
+                
+                var url3 = createPersonalUrlForUserIn1GroupsResponse.Url;
+
+                var createPersonalUrlForObserverResponse = await _context.ApiClient.Approvals.CreatePersonalUrl(new PersonalUrlCreateParameters
+                {
+                    UserId = "",
+                    Observer = true,
+                    Version = 3,
+                    ApprovalId = approvalId
+                });
+
+                // Note: To test the url, debug the tests and set a breakpoint on the line below, get the url and try it in a browser.
+                // The approval will be deleted below, so test the url manually then contine..
+                // This is an observer URL (should see all groups, notes, comments and no decisions or adding comments)
+                var url4 = createPersonalUrlForObserverResponse.Url;
+
+                // Create a Personal Url for the vesion we just created
+                var createPersonalUrlForUserInZeroGroupsResponse = await _context.ApiClient.Approvals.CreatePersonalUrl(new PersonalUrlCreateParameters
+                {
+                    UserId = approvalReviewer4Id,
+                    Version = 3,
+                    ApprovalId = approvalId
+                });
+
+                // Note: To test the url, debug the tests and set a breakpoint on the line below, get the url and try it in a browser.
+                // The approval will be deleted below, so test the url manually then contine..
+                // This is an URL for an approver in zero groups
+                var url5 = createPersonalUrlForUserInZeroGroupsResponse.Url;
+
+                var urls = $"{url}{Environment.NewLine}{url2}{Environment.NewLine}{url3}{Environment.NewLine}{url4}{Environment.NewLine}{url4}{Environment.NewLine}";
+
+                await _context.ApiClient.Approvals.AddApprovalGroupUser(new ApprovalGroupUserParameters
+                {
+                    UserId = approvalReviewer3Id,
+                    Id = newVersionWithNewReviewersResult.Id,
+                    Version = newVersionWithNewReviewersResult.Version,
+                    AllowDecision = true,
+                    AllowDownload = true,
+                    AllowVersionSelection = true,
+                    //ApprovalGroupId not set to pick up first group
+                });
+
+                await _context.ApiClient.Approvals.UpdateApprovalGroupUser(new ApprovalGroupUserParameters
+                {
+                    UserId = approvalReviewer2Id,
+                    Id = newVersionWithNewReviewersResult.Id,
+                    Version = newVersionWithNewReviewersResult.Version,
+                    AllowDecision = false,
+                    AllowDownload = false,
+                    AllowVersionSelection = false,
+                    //ApprovalGroupId not set to pick up first group
+                });
+
+                await _context.ApiClient.Approvals.UpdateApprovalGroupUser(new ApprovalGroupUserParameters
+                {
+                    UserId = approvalReviewer3Id,
+                    Id = newVersionWithNewReviewersResult.Id,
+                    Version = newVersionWithNewReviewersResult.Version,
+                    AllowDecision = false,
+                    AllowDownload = false,
+                    AllowVersionSelection = false,
+                    //ApprovalGroupId not set to pick up first group
+                });
+
+                // Get Approval Details
+                var approval = await _context.ApiClient.Approvals.Get(approvalId);
+
+                var apprId = approval.Id;
 
                 // We add 2 reviewers to the approval
 
@@ -242,18 +398,15 @@ namespace MediaMarkup.Tests
                 // delete approval
                 await _context.ApiClient.Approvals.Delete(approvalId);
 
-                // delete users
+                // delete test users
                 await _context.ApiClient.Users.Delete(approvalOwnerUserid);
                 await _context.ApiClient.Users.Delete(approvalReviewer1Id);
                 await _context.ApiClient.Users.Delete(approvalReviewer2Id);
-                //await _context.ApiClient.Users.Delete(approvalReviewer3Id);
-                //await _context.ApiClient.Users.Delete(approvalReviewer4Id);
+                await _context.ApiClient.Users.Delete(approvalReviewer3Id);
+                await _context.ApiClient.Users.Delete(approvalReviewer4Id);
 
                 Assert.True(true);
             }
-
-
         }
-
     }
 }
