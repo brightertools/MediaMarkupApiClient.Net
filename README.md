@@ -16,9 +16,7 @@ All end-points can be found and used interatively at [https://www.mediamarkup.co
 
 ### Full Documentation
 
-Full documentation on how to use this library can be found at [https://mediamarkupdocumentation.readthedocs.io/en/latest/](https://mediamarkupdocumentation.readthedocs.io/en/latest/)
-
-(under development, probably not that useful)
+Full documentation on how to use this library can be found at [https://mediamarkup.gitbook.io/docs](https://mediamarkup.gitbook.io/docs)
 
 ### Installation
 
