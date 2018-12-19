@@ -252,6 +252,19 @@ namespace MediaMarkup.Api
         }
 
         /// <inheritdoc />
+        public async Task<ApprovalGroupCreateResult> AddApprovalGroup(ApprovalGroupCreateParameters parameters)
+        {
+            var response = await ApiClient.PostAsJsonAsync("Approvals/AddApprovalGroup/", parameters);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsJsonAsync<ApprovalGroupCreateResult>();
+            }
+
+            throw new ApiException("Approvals.AddApprovalGroup", response.StatusCode, await response.Content.ReadAsStringAsync());
+        }
+
+        /// <inheritdoc />
         public async Task AddApprovalGroupUser(ApprovalGroupUserParameters parameters)
         {
             var response = await ApiClient.PostAsJsonAsync("Approvals/AddApprovalGroupUser/", parameters);
@@ -292,6 +305,39 @@ namespace MediaMarkup.Api
             if (!response.IsSuccessStatusCode)
             {
                 throw new ApiException("Approvals.RemoveApprovalGroupUser", response.StatusCode, await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task ResetApprovalGroupUserDecisions(ApprovalGroupUserParameters parameters)
+        {
+            var response = await ApiClient.PostAsJsonAsync("Approvals/ResetApprovalGroupUserDecisions/", parameters);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException("Approvals.ResetApprovalGroupUserDecisions", response.StatusCode, await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task SetApprovalGroupUserDecision(ApprovalGroupUserDecisionParameters parameters)
+        {
+            var response = await ApiClient.PostAsJsonAsync("Approvals/SetApprovalGroupUserDecision/", parameters);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException("Approvals.SetApprovalGroupUserDecision", response.StatusCode, await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task SetApprovalVersionLock(ApprovalVersionLockParameters parameters)
+        {
+            var response = await ApiClient.PostAsJsonAsync("Approvals/SetApprovalVersionLock/", parameters);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException("Approvals.SetApprovalVersionLock", response.StatusCode, await response.Content.ReadAsStringAsync());
             }
         }
     }
