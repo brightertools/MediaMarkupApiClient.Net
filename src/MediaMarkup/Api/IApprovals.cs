@@ -74,7 +74,7 @@ namespace MediaMarkup.Api
         Task<ApprovalCreateVersionResult> CreateVersion(string filePath, ApprovalCreateVersionParameters parameters);
 
         /// <summary>
-        /// 
+        /// Creates a new approval version
         /// </summary>
         /// <param name="filename">Filename (must include a support extension)</param>
         /// <param name="fileContent">File content as byte array</param>
@@ -97,6 +97,13 @@ namespace MediaMarkup.Api
         /// <param name="id"></param>
         /// <returns></returns>
         Task Delete(string id);
+
+        /// <summary>
+        /// Adds a new approval group to the specified approval
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        Task<ApprovalGroupCreateResult> AddApprovalGroup(ApprovalGroupCreateParameters parameters);
 
         /// <summary>
         /// Adds an approval group user to the specified approval version
@@ -125,5 +132,26 @@ namespace MediaMarkup.Api
         /// <param name="parameters"></param>
         /// <returns></returns>
         Task RemoveApprovalGroupUser(ApprovalGroupRemoveUserParameters parameters);
+
+        /// <summary>
+        /// Resets all Approval Group User Decisions and unlocks the version
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        Task ResetApprovalGroupUserDecisions(ApprovalGroupUserParameters parameters);
+
+        /// <summary>
+        /// Sets an approval group user decision
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        Task SetApprovalGroupUserDecision(ApprovalGroupUserDecisionParameters parameters);
+
+        /// <summary>
+        /// Sets the approval version as locked or unlocked
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        Task SetApprovalVersionLock(ApprovalVersionLockParameters parameters);
     }
 }
