@@ -1,4 +1,10 @@
 ﻿---------------
+Version 0.0.0.8
+---------------
+
+ADDED: Api calls: AddApprovalGroup,  ResetApprovalGroupUserDecisions,  SetApprovalGroupUserDecision, SetApprovalVersionLock
+
+---------------
 Version 0.0.0.7
 ---------------
 
@@ -8,7 +14,7 @@ ADDED: Approvals.Get api call
 Version 0.0.0.6
 ---------------
 
-ADDED: API calls to Add Update and Remove Aproval group users
+ADDED: API calls to Add Update and Remove Approval group users
 
 ---------------
 Version 0.0.0.5
