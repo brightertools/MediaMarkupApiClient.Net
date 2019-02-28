@@ -340,5 +340,27 @@ namespace MediaMarkup.Api
                 throw new ApiException("Approvals.SetApprovalVersionLock", response.StatusCode, await response.Content.ReadAsStringAsync());
             }
         }
+
+        /// <inheritdoc />
+        public async Task SetApprovalGroupEnabled(ApprovalGroupSetEnabledParameters parameters)
+        {
+            var response = await ApiClient.PostAsJsonAsync("Approvals/SetApprovalGroupEnabled/", parameters);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException("Approvals.SetApprovalGroupEnabled", response.StatusCode, await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task SetApprovalGroupReadonly(ApprovalGroupSetReadOnlyParameters parameters)
+        {
+            var response = await ApiClient.PostAsJsonAsync("Approvals/SetApprovalGroupReadonly/", parameters);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException("Approvals.SetApprovalGroupReadonly", response.StatusCode, await response.Content.ReadAsStringAsync());
+            }
+        }
     }
 }
