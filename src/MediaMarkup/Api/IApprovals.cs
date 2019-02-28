@@ -153,5 +153,18 @@ namespace MediaMarkup.Api
         /// <param name="parameters"></param>
         /// <returns></returns>
         Task SetApprovalVersionLock(ApprovalVersionLockParameters parameters);
+
+        /// <summary>
+        /// Set Approval Group Enabled
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        Task SetApprovalGroupEnabled(ApprovalGroupSetEnabledParameters parameters);
+
+        /// <summary>
+        /// Set Approval Group Readonly
+        /// </summary>
+        /// <param name="parameters"></param>
+        Task SetApprovalGroupReadonly(ApprovalGroupSetReadOnlyParameters parameters);
     }
 }

@@ -1,4 +1,11 @@
 ﻿---------------
+Version 0.0.0.9
+---------------
+
+ADDED: Api calls: SetApprovalGroupEnabled, SetApprovalGroupReadonly
+
+
+---------------
 Version 0.0.0.8
 ---------------
 
