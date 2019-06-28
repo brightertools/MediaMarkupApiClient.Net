@@ -166,5 +166,12 @@ namespace MediaMarkup.Api
         /// </summary>
         /// <param name="parameters"></param>
         Task SetApprovalGroupReadonly(ApprovalGroupSetReadOnlyParameters parameters);
+
+        /// <summary>
+        /// Downloads the exported annotaions, notes comments for an approval version related to image or pdf based approvals
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        Task<byte[]> ExportAnnotationReport(ExportReportParameters parameters);
     }
 }
