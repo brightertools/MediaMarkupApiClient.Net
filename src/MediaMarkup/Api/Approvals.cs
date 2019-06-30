@@ -362,5 +362,18 @@ namespace MediaMarkup.Api
                 throw new ApiException("Approvals.SetApprovalGroupReadonly", response.StatusCode, await response.Content.ReadAsStringAsync());
             }
         }
+
+        /// <inheritdoc />
+        public async Task<byte[]> ExportAnnotationReport(ExportReportParameters parameters)
+        {
+            var response =  await ApiClient.GetAsync($"Approvals/ExportAnnotationReport/?{parameters.ToQueryStringValues()}");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsByteArrayAsync();
+            }
+
+            throw new ApiException("Approvals.ExportAnnotationReport", response.StatusCode, await response.Content.ReadAsStringAsync());
+        }
     }
 }
